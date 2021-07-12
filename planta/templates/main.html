@@ -1,0 +1,409 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>GROW - Auto Cultivo Indoor</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-circle"></div>
+        <div class="preloader-img">
+            <img src="{% static 'images/leaf.png' %}" alt="">
+        </div>
+    </div>
+
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+        <!-- ***** Navbar Area ***** -->
+        <div class="alazea-main-menu">
+            <div class="classy-nav-container breakpoint-off" style="background-color:rgba(255,255,255,1);">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="alazeaNav">
+
+                        <!-- Nav Brand -->
+                        <img src="{% static 'images/logo.png' %}" alt="" style="height: 50px; width: auto;">
+
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Navbar Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li style="background-color:rgba(0,0,0,0.8);"><a href="./">Home</a></li>
+                                </ul>
+                            </div>
+                            <!-- Navbar End -->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcrumb Area Start ##### -->
+    <div class="breadcrumb-area">
+        <!-- Top Breadcrumb Area -->
+        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url({% static 'images/24.jpg' %}); height: 200px;">
+            <h2 style="font-weight:600;">Sua Planta</h2>
+        </div>
+    </div>
+    <!-- ##### Breadcrumb Area End ##### -->
+
+    <!-- ##### About Area Start ##### -->
+    <section class="about-us-area">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-12 col-lg-5">
+					<br>
+                    <!-- Section Heading -->
+                    <div class="section-heading">
+                        <h2>Online Status</h2>
+                        <p>Veja como está sua planta in real time.</p>
+                    </div>
+                    <p>Quisque orci quam, vulputate non commodo finibus, molestie ac ante. Duis in sceleri quesem. Nulla sit amet varius nunc. Maecenas dui, tempeu ullam corper in.</p>
+
+                    <!-- Progress Bar Content Area -->
+                    <div class="alazea-progress-bar mb-50">
+                        <!-- Single Progress Bar -->
+                        <div class="single_progress_bar">
+                            <p>Luminosidade</p>
+                            <br>
+                            <div id="bar1" class="barfiller">
+                                <div class="tipWrap">
+                                    <span class="tip"></span>
+                                </div>
+                                <span class="fill" data-percentage="{{ ilu_ideal }}"></span>
+                            </div>
+                        </div>
+
+                        <!-- Single Progress Bar -->
+                        <div class="single_progress_bar">
+                            <p>Umidade</p>
+                            <br>
+                            <div id="bar2" class="barfiller">
+                                <div class="tipWrap">
+                                    <span class="tip"></span>
+                                </div>
+                                <span class="fill" data-percentage="{{ umi_ideal }}"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-5">
+					<br>
+                    <!-- Section Heading -->
+                    <div class="section-heading">
+                        <h2>Altere a planta do seu vaso</h2>
+                        <p>Para alterar a planta que está em seu vaso, preencha o formulário:</p>
+                    </div>
+                    <!-- Contact Form Area -->
+                    <div class="contact-form-area mb-100">
+                        <form action="." method="post">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <h5>Espécie</h5>
+                                        <select name="especie" type="especie" class="form-control" id="Especie">
+                                            <option value="0">Colocar dados manualmente</option>
+                                             {% for esp in especies %}
+                                            <option value="{{ esp.id }}">{{ esp.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <h5>Luminosidade</h5>
+                                        <input name="luminosidade" type="text" class="form-control" id="lum-subject" placeholder="Valor em lúmens">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <h5>Umidade</h5>
+                                        <input name="umidade" type="text" class="form-control" id="umi-subject" placeholder="Valor em mm">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn alazea-btn mt-15">Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="border-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### About Area End ##### -->
+
+    <!-- ##### Service Area Start ##### -->
+    <section class="our-services-area bg-gray section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Section Heading -->
+                    <div class="section-heading text-center">
+                        <h2>OUR SERVICES</h2>
+                        <p>We provide the perfect service for you.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center justify-content-between">
+                <div class="col-12 col-lg-5">
+                    <div class="alazea-service-area mb-100">
+
+                        <!-- Single Service Area -->
+                        <div class="single-service-area d-flex align-items-center">
+                            <!-- Icon -->
+                            <div class="service-icon mr-30">
+                                <img src="{% static 'images/s1.png' %}" alt="">
+                            </div>
+                            <!-- Content -->
+                            <div class="service-content">
+                                <h5>Plants Care</h5>
+                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Service Area -->
+                        <div class="single-service-area d-flex align-items-center">
+                            <!-- Icon -->
+                            <div class="service-icon mr-30">
+                                <img src="{% static 'images/s2.png' %}" alt="">
+                            </div>
+                            <!-- Content -->
+                            <div class="service-content">
+                                <h5>Pressure Washing</h5>
+                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Service Area -->
+                        <div class="single-service-area d-flex align-items-center">
+                            <!-- Icon -->
+                            <div class="service-icon mr-30">
+                                <img src="{% static 'images/s3.png' %}" alt="">
+                            </div>
+                            <!-- Content -->
+                            <div class="service-content">
+                                <h5>Tree Service &amp; Trimming</h5>
+                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="alazea-video-area bg-overlay mb-100">
+                        <img src="{% static 'images/23.jpg' %}" alt="">
+                        <a href="http://www.youtube.com/watch?v=7HKoqNJtMTQ" class="video-icon">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Service Area End ##### -->
+
+    <!-- ##### Team Area Start ##### -->
+    <section class="team-area section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Section Heading -->
+                    <div class="section-heading text-center">
+                        <h2>Nosso time</h2>
+                        <p>As pessoas que tornaram esse projeto possível.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <!-- Single Team Member Area -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-team-member text-center mb-100">
+                        <!-- Team Member Thumb -->
+                        <div class="team-member-thumb">
+                            <img src="{% static 'images/team1.png' %}" alt="">
+                            <!-- Social Info -->
+                            <div class="team-member-social-info">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> bernardo.rocco@usp.br</a>
+                            </div>
+                        </div>
+                        <!-- Team Member Info -->
+                        <div class="team-member-info mt-30">
+                            <h5>Bernardo Rocco</h5>
+                            <p>10706145</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Team Member Area -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-team-member text-center mb-100">
+                        <!-- Team Member Thumb -->
+                        <div class="team-member-thumb">
+                            <img src="{% static 'images/team2.png' %}" alt="">
+                            <!-- Social Info -->
+                            <div class="team-member-social-info">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> leonardo.guidetti@usp.br</a>
+                            </div>
+                        </div>
+                        <!-- Team Member Info -->
+                        <div class="team-member-info mt-30">
+                            <h5>Leonardo Guidetti</h5>
+                            <p>10770388</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Team Member Area -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-team-member text-center mb-100">
+                        <!-- Team Member Thumb -->
+                        <div class="team-member-thumb">
+                            <img src="{% static 'images/team3.png' %}" alt="">
+                            <!-- Social Info -->
+                            <div class="team-member-social-info">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> lucas_moraes@usp.br</a>
+                            </div>
+                        </div>
+                        <!-- Team Member Info -->
+                        <div class="team-member-info mt-30">
+                            <h5>Lucas Moraes</h5>
+                            <p>10770610</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Team Member Area -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-team-member text-center mb-100">
+                        <!-- Team Member Thumb -->
+                        <div class="team-member-thumb">
+                            <img src="{% static 'images/team4.png' %}" alt="">
+                            <!-- Social Info -->
+                            <div class="team-member-social-info">
+                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> vinicosta@usp.br</a>
+                            </div>
+                        </div>
+                        <!-- Team Member Info -->
+                        <div class="team-member-info mt-30">
+                            <h5>Vinicius Costa</h5>
+                            <p>7254069</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ##### Team Area End ##### -->
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area bg-img" style="background-image: url({% static 'images/3.jpg' %});">
+        <!-- Footer Bottom Area -->
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border-line"></div>
+                    </div>
+                    <!-- Copywrite Text -->
+                    <div class="col-12 col-md-6">
+                        <div class="copywrite-text">
+                            <p>WebSite criado por Bernardo Rocco</p>
+                        </div>
+                    </div>
+                    <!-- Footer Nav -->
+                    <div class="col-12 col-md-6">
+                        <div class="footer-nav">
+                            <nav>
+                                <ul>
+                                    <li><a href="#">Home</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+    <!-- ##### All Javascript Files ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'js/active.js' %}"></script>
+    <script type="text/javascript">
+    $('#Especie').change(function () {
+        var value = this.value;
+        if (value == 0){
+            $('#lum-subject').attr('placeholder', 'Valor em lúmens')
+            $('#umi-subject').attr('placeholder', 'Valor em mm')
+            $('#lum-subject').attr(':readonly')
+            $('#umi-subject').attr(':readonly')
+        }
+        {% for esp in especies %}
+        if (value == {{ esp.id }}){
+            console.log('222');
+            $('#lum-subject').attr('placeholder', '{{ esp.iluminacao }}')
+            $('#umi-subject').attr('placeholder', '{{ esp.umidade }}')
+            $('#lum-subject').attr('readonly')
+            $('#umi-subject').attr('readonly')
+        }
+        {% endfor %}
+    });
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Planta, Especie
-from datetime import datetime
+from django.utils import timezone
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -26,7 +26,10 @@ def visaoPlanta(request):
             planta.save()
     especies = Especie.objects.filter()
     (ilu, umi) = planta.dados()
-    context = {'ilu_ideal':ilu, "umi_ideal":umi, "especies":especies}
+    ts = []
+    for t in planta.ts_dados:
+        ts.append(t.timestamp()*1000)
+    context = {'ilu_ideal':ilu, "umi_ideal":umi, "especies":especies, "ilu_dados":planta.ilu_dados, "umi_dados":planta.umi_dados, "ts_dados":ts}
     return render(request, template_name, context)
 
 @csrf_exempt
@@ -39,7 +42,7 @@ def dadosPlantas(request):
             respData = str(ilu)+','+str(umi)
             planta.ilu_dados.append(data[1])
             planta.umi_dados.append(data[2])
-            planta.ts_dados.append(datetime.now())
+            planta.ts_dados.append(timezone.now())
             planta.save()
             return HttpResponse(respData)
         except Exception as e:

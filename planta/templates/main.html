@@ -18,6 +18,8 @@
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js" integrity="sha512-5vwN8yor2fFT9pgPS9p9R7AszYaNn0LkQElTXIsZFCL7ucT8zDCAqlQXDdaqgA1mZP47hdvztBMsIoFxq/FyyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 
 <body>
@@ -85,39 +87,13 @@
                 <div class="col-12 col-lg-5">
 					<br>
                     <!-- Section Heading -->
-                    <div class="section-heading">
+                    <div class="section-heading" style="margin-bottom: 10px;">
                         <h2>Online Status</h2>
-                        <p>Veja como está sua planta in real time.</p>
+                        <p>Veja como está sua planta em tempo real.</p>
                     </div>
-                    <p>Quisque orci quam, vulputate non commodo finibus, molestie ac ante. Duis in sceleri quesem. Nulla sit amet varius nunc. Maecenas dui, tempeu ullam corper in.</p>
-
-                    <!-- Progress Bar Content Area -->
-                    <div class="alazea-progress-bar mb-50">
-                        <!-- Single Progress Bar -->
-                        <div class="single_progress_bar">
-                            <p>Luminosidade</p>
-                            <br>
-                            <div id="bar1" class="barfiller">
-                                <div class="tipWrap">
-                                    <span class="tip"></span>
-                                </div>
-                                <span class="fill" data-percentage="{{ ilu_ideal }}"></span>
-                            </div>
-                        </div>
-
-                        <!-- Single Progress Bar -->
-                        <div class="single_progress_bar">
-                            <p>Umidade</p>
-                            <br>
-                            <div id="bar2" class="barfiller">
-                                <div class="tipWrap">
-                                    <span class="tip"></span>
-                                </div>
-                                <span class="fill" data-percentage="{{ umi_ideal }}"></span>
-                            </div>
-                        </div>
-
-                    </div>
+                    
+                    <canvas id="iluChart" width="auto" height="150px"></canvas>
+                    <canvas id="umiChart" width="auto" height="150px"></canvas>
                 </div>
 
                 <div class="col-12 col-lg-5">
@@ -404,6 +380,116 @@
         {% endfor %}
     });
     </script>
+    <script>
+        var ctx = document.getElementById('iluChart');
+        Chart.defaults.font.family = '"Dosis", sans-serif';
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ ts_dados }},
+                datasets: [
+                {
+                    label: 'Configurado',
+                    data: Array({{ ilu_dados }}.length).fill({{ ilu_ideal }}),
+                    borderDash: [5, 5],
+                    backgroundColor: 'rgba(48, 102, 69, 1)',
+                    borderColor: 'rgba(48, 102, 69, 1)',
+                    pointStyle: 'line',
+                },
+                {
+                    label: 'Medido',
+                    data: {{ ilu_dados }},
+                    borderColor: 'rgba(246, 174, 45, 1)',
+                    backgroundColor: 'rgba(246, 174, 45, 0.5)',
+                    fill: true,
+                    pointStyle: 'line',
+                }]
+            },
+            options: {
+                interaction: {
+                  mode: 'index',
+                  intersect: false
+                },
+                responsive: true,
+                scales: {
+                    y: {
+                        min: 0,
+                    },
+                    x:{
+                        type: 'time',
+                    }
+                },
+                plugins: {
+                    legend: {
+                        pointStyle: 'circle',
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Luminosidade',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+        </script>
+        <script>
+            var ctx = document.getElementById('umiChart');
+            Chart.defaults.font.family = '"Dosis", sans-serif';
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ ts_dados }},
+                    datasets: [
+                    {
+                        label: 'Configurado',
+                        data: Array({{ umi_dados }}.length).fill({{ umi_ideal }}),
+                        borderDash: [10, 5],
+                        backgroundColor: 'rgba(48, 102, 69, 1)',
+                        borderColor: 'rgba(48, 102, 69, 1)',
+                        pointStyle: 'line',
+                    },
+                    {
+                        label: 'Medido',
+                        data: {{ umi_dados }},
+                        borderColor: 'rgba(134, 187, 216, 1)',
+                        backgroundColor: 'rgba(134, 187, 216, 0.5)',
+                        fill: true,
+                        pointStyle: 'line',
+                    }]
+                },
+                options: {
+                    interaction: {
+                      mode: 'index',
+                      intersect: false
+                    },
+                    responsive: true,
+                    scales: {
+                        y: {
+                            min: 0,
+                        },
+                        x:{
+                            type: 'time',
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            pointStyle: 'circle',
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Umidade',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+            </script>
 </body>
 
 </html>

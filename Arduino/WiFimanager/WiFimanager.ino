@@ -27,7 +27,8 @@ void loop() {
   if (connec) {
     HTTPClient client;
     client.begin("https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json");
-    int code = client.GET();    
+    int code = client.GET;
+    client.end();
     if (code > 0){
       String payload = client.getString();
       Serial.println("\nStatuscode: " + String(code));

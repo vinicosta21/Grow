@@ -8,10 +8,11 @@
 #define LED_BUILTIN 2
 #endif
 
-const int RELE_1 = 27;
-
 #include <Wire.h>
+#include<WiFi.h>
 #include <BH1750.h>
+//#include "sensor_umidade.h"
+#include "time.h"
 
 BH1750 lightMeter;
 
@@ -19,19 +20,42 @@ BH1750 lightMeter;
 void TaskBlink( void *pvParameters );
 void TaskAnalogReadA3( void *pvParameters );
 
+const long  gmtOffset_sec = -10800;
+const char* ntpServer = "pool.ntp.org";
+const int daylightOffset_sec = 0;
+
+const char* ssid       = "costa";
+const char* password   = "anaedu13071986";
+
+
+void printLocalTime()
+{
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+    return;
+  }
+  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+}
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
-
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+      delay(500);
+      Serial.print(".");
+  }
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  printLocalTime();
   
   
   // Now set up two tasks to run independently.
   xTaskCreatePinnedToCore(
-    TaskBlink
-    ,  "TaskBlink"   // A name just for humans
+    TaskIluminar
+    ,  "Iluminacao"   // A name just for humans
     ,  1024  // This stack size can be checked & adjusted by reading the Stack Highwater
     ,  NULL
     ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
@@ -40,7 +64,7 @@ void setup() {
 
   xTaskCreatePinnedToCore(
     TaskIrrigacao
-    ,  "Irrigacai"
+    ,  "Irrigacao"
     ,  1024  // Stack size
     ,  NULL
     ,  1  // Priority
@@ -59,7 +83,7 @@ void loop()
 /*---------------------- Tasks ---------------------*/
 /*--------------------------------------------------*/
 
-void TaskBlink(void *pvParameters)  // This is a task.
+void TaskIluminar(void *pvParameters)  // This is a task.
 {
   (void) pvParameters;
 
@@ -76,10 +100,8 @@ void TaskBlink(void *pvParameters)  // This is a task.
   
   for (;;) // A Task shall never return or exit.
   {
-    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-    vTaskDelay(1000);  // one tick delay (15ms) in between reads for stability
-    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-    vTaskDelay(1000);  // one tick delay (15ms) in between reads for stability
+    Serial.println("Rodou");
+    vTaskDelay(10000);
   }
 }
 
@@ -97,20 +119,25 @@ void TaskIrrigacao(void *pvParameters)  // This is a task.
 */
   Wire.begin();
   lightMeter.begin();
-//  pinMode(RELE_1, OUTPUT);
+  const int RELE_1 = 27;
+  pinMode(RELE_1, OUTPUT);
+  digitalWrite(RELE_1, HIGH);
   
   for (;;)
   {
     // read the input on analog pin A3:
+    struct tm timeinfo;
+    getLocalTime(&timeinfo);
     float lux = lightMeter.readLightLevel();
     // print out the value you read:
     Serial.println(lux);
-//    if (lux > 10000) {
-//      digitalWrite(RELE_1, LOW);
-//    }
-//    else {
-//      digitalWrite(RELE_1, HIGH);
-//    }
+    Serial.println(&timeinfo, "%s");
+    if (timeinfo.tm_sec % 2 == 0 && lux > 2000) {
+      digitalWrite(RELE_1, HIGH);
+    }
+    else {
+      digitalWrite(RELE_1, LOW);
+    }
     vTaskDelay(1000);  // one tick delay (15ms) in between reads for stability
   }
 }

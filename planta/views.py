@@ -22,7 +22,7 @@ def visaoPlanta(request):
             planta.umi_manual = int(umiData)
             planta.especie = None
             planta.save()
-    especies = Especie.objects.filter()
+    especies = Especie.objects.filter().order_by('nome')
     hrs, ilu, umi = planta.dados()
     ts = []
     for t in planta.ts_dados:

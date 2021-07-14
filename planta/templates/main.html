@@ -121,13 +121,23 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <h5>Luminosidade</h5>
-                                        <input name="luminosidade" type="text" class="form-control" id="lum-subject" placeholder="Valor em lúmens">
+                                        <select name="luminosidade" type="text" class="form-control" id="lum-subject">
+                                            <option value="-1">-</option>
+                                            <option value="0">Baixa</option>
+                                            <option value="1">Média</option>
+                                            <option value="2">Alta</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <h5>Umidade</h5>
-                                        <input name="umidade" type="text" class="form-control" id="umi-subject" placeholder="Valor em mm">
+                                        <select name="umidade" type="text" class="form-control" id="umi-subject">
+                                            <option value="-1">-</option>
+                                            <option value="0">Baixa</option>
+                                            <option value="1">Média</option>
+                                            <option value="2">Alta</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -363,19 +373,19 @@
     <script type="text/javascript">
     $('#Especie').change(function () {
         var value = this.value;
+        
         if (value == 0){
-            $('#lum-subject').attr('placeholder', 'Valor em lúmens')
-            $('#umi-subject').attr('placeholder', 'Valor em mm')
-            $('#lum-subject').attr(':readonly')
-            $('#umi-subject').attr(':readonly')
+            $('#lum-subject').val("-1");
+            $('#umi-subject').val("-1");
+            $('#lum-subject').attr("disabled", false);
+            $('#umi-subject').attr("disabled", false);
         }
         {% for esp in especies %}
         if (value == {{ esp.id }}){
-            console.log('222');
-            $('#lum-subject').attr('placeholder', '{{ esp.iluminacao }}')
-            $('#umi-subject').attr('placeholder', '{{ esp.umidade }}')
-            $('#lum-subject').attr('readonly')
-            $('#umi-subject').attr('readonly')
+            $('#lum-subject').val('{{ esp.iluminacao }}');
+            $('#umi-subject').val('{{ esp.umidade }}');
+            $('#lum-subject').attr("disabled", true);
+            $('#umi-subject').attr("disabled", true);
         }
         {% endfor %}
     });

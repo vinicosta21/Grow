@@ -40,10 +40,11 @@ def dadosPlantas(request):
             planta = Planta.objects.filter(serial=data[0]).first()
             (hrs, ilu, umi) = planta.dados()
             respData = str(hrs)+','+str(ilu)+','+str(umi)
-            planta.ilu_dados.append(data[1])
-            planta.umi_dados.append(data[2])
-            planta.ts_dados.append(timezone.now())
-            planta.save()
+            if not data[1] == '-1':
+                planta.ilu_dados.append(data[1])
+                planta.umi_dados.append(data[2])
+                planta.ts_dados.append(timezone.now())
+                planta.save()
             return HttpResponse(respData)
         except Exception as e:
             print(e)

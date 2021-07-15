@@ -29,7 +29,7 @@ def visaoPlanta(request):
         tst = t.timestamp()*1000
         if tst >= timezone.now().timestamp()*1000-(24*60*60*1000):
             ts.append(tst)
-    context = {'ilu_ideal':ilu, "umi_ideal":umi, "especies":especies, "ilu_dados":planta.ilu_dados[-len(ts):], "umi_dados":planta.umi_dados[-len(ts):], "ts_dados":ts}
+    context = {'ilu_ideal':ilu, "umi_ideal":4095-umi, "especies":especies, "ilu_dados":planta.ilu_dados[-len(ts):], "umi_dados":planta.umi_dados[-len(ts):], "ts_dados":ts}
     return render(request, template_name, context)
 
 @csrf_exempt
@@ -42,7 +42,7 @@ def dadosPlantas(request):
             respData = str(hrs)+','+str(ilu)+','+str(umi)
             if not data[1] == '-1':
                 planta.ilu_dados.append(data[1])
-                planta.umi_dados.append(data[2])
+                planta.umi_dados.append(4095-int(data[2]))
                 planta.ts_dados.append(timezone.now())
                 planta.save()
             return HttpResponse(respData)

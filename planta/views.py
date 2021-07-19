@@ -1,3 +1,4 @@
+from django.http.response import FileResponse
 from django.shortcuts import render
 from .models import Planta, Especie
 from django.utils import timezone
@@ -49,3 +50,6 @@ def dadosPlantas(request):
         except Exception as e:
             print(e)
             return HttpResponse(status=400)
+
+def manualPDF(request):
+    return FileResponse(open('planta/static/Manual do Sistema.pdf', 'rb'), content_type='application/pdf')

@@ -20,5 +20,6 @@ from planta import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.visaoPlanta, name="main"),
-    path('dados', views.dadosPlantas, name="data")
+    path('dados', views.dadosPlantas, name="data"),
+    path('manual', views.manualPDF, name='manual')
 ]

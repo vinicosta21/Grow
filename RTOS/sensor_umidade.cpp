@@ -3,7 +3,6 @@
 SensorUmidade::SensorUmidade() {
 	pinMode(VCC_SENS_H2O, OUTPUT);
 	pinMode(SENS_H2O, INPUT);
-	Serial.println("Sensor de umidade iniciado");
 }
 
 int SensorUmidade::medirUmidade() {

@@ -27,16 +27,10 @@ const int daylightOffset_sec = 0;
 const char* ssid       = "costa";
 const char* password   = "anaedu13071986";
 
+int LUM_MIN = 2000;
+int HORA_MIN = 6;
+int HORA_MAX = 18;
 
-void printLocalTime()
-{
-  struct tm timeinfo;
-  if(!getLocalTime(&timeinfo)){
-    Serial.println("Failed to obtain time");
-    return;
-  }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-}
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -49,7 +43,7 @@ void setup() {
       Serial.print(".");
   }
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  printLocalTime();
+
   
   
   // Now set up two tasks to run independently.
@@ -131,8 +125,7 @@ void TaskIrrigacao(void *pvParameters)  // This is a task.
     float lux = lightMeter.readLightLevel();
     // print out the value you read:
     Serial.println(lux);
-    Serial.println(&timeinfo, "%s");
-    if (timeinfo.tm_sec % 2 == 0 && lux > 2000) {
+    if ((timeinfo.tm_hour > HORA_MIN || timeinfo.tm_hour < HORA_MAX) && lux < LUM_MIN) {
       digitalWrite(RELE_1, HIGH);
     }
     else {

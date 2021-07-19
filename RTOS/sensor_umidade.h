@@ -8,11 +8,9 @@
 
 class SensorUmidade
 {
-public:
-	SensorUmidade();
-	
-	int medirUmidade();
-
+  public:
+	  SensorUmidade();
+	  int medirUmidade();
 };
 
 #endif

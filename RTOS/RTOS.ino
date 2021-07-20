@@ -19,6 +19,7 @@ SensorUmidade umd;
 BH1750 lum;
 BombaAgua bag;
 Luz luz;
+WiFiManager wm;
 
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = -10800;
@@ -30,34 +31,23 @@ int seco = 2000;
 char buffer[40];
 
 
-// define two tasks for Blink & AnalogRead
+// define 2 tasks para Request e Interrupcoes
 void TaskRequest( void *pvParameters );
-void TaskInterrupcoes( void *pvParameters );
+void TaskLuz( void *pvParameters );
+void TaskIrrigar( void *pvParameters );
 
-void printLocalTime()
-{
-  struct tm timeinfo;
-  if(!getLocalTime(&timeinfo)){
-    Serial.println("Failed to obtain time");
-    return;
-  }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-}
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
-  WiFiManager wm;
   Wire.begin();
   lum.begin();
 
-//    sprintf(buffer, "vinicius,%d,%d\0",(int)lum.readLightLevel(),umd.medirUmidade());
-//    Serial.println(buffer);
   
-  //  wm.resetSettings();
-  bool connec = wm.autoConnect("Grow");
+//  wm.resetSettings();
+  bool connec = wm.autoConnect("Grow"); // Acessar 192.168.4.1
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   
   // Now set up two tasks to run independently.
@@ -126,12 +116,27 @@ void TaskRequest(void *pvParameters)  // This is a task.
       String payload = client.getString();
       Serial.println("\nStatuscode: " + String(code));
       Serial.println(payload);
+      int str_len = payload.length() + 1;
+      char char_array[str_len];
+      payload.toCharArray(char_array, str_len);
+      char *token;
+      String t_aux, umd_aux, luz_aux;
+      t_aux = (String)strtok(char_array, ",");
+      delta_t_luz = t_aux.toInt();
+      Serial.println(delta_t_luz);
+      luz_aux = (String)strtok(NULL, ",");
+      min_lux = (float)luz_aux.toInt();
+      Serial.println(min_lux);
+      umd_aux = (String)strtok(NULL, ",");
+      seco = umd_aux.toInt();
+      Serial.println(seco);
+      
     }
     else{
       Serial.println("Erro no request");
     }
     client.end();
-    vTaskDelay(3000);
+    vTaskDelay(5000);
   }
 }
 

@@ -136,7 +136,7 @@ void TaskRequest(void *pvParameters)  // This is a task.
       Serial.println("Erro no request");
     }
     client.end();
-    vTaskDelay(5000);
+    vTaskDelay(300000);
   }
 }
 
@@ -164,7 +164,7 @@ void TaskLuz(void *pvParameters)  // This is a task.
     else{
       luz.desligarLuz();
     }
-    vTaskDelay(5000);
+    vTaskDelay(600000);
   }
 }
 
@@ -186,12 +186,12 @@ void TaskIrrigar(void *pvParameters)  // This is a task.
     int umidade = umd.medirUmidade();
     if (umidade > seco){
       bag.ligarBomba();
-      delay(5000);
+      delay(2000);
       bag.desligarBomba();
-      vTaskDelay(5000);
+      vTaskDelay(10000);
     }
     else {
-      vTaskDelay(300000);
+      vTaskDelay(3600000);
     }
   }
 }
